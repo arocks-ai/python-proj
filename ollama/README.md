@@ -8,6 +8,7 @@
     Ollama model info: https://github.com/ollama/ollama
 
 
+
 ### 1 Create a custom Model using Model file
     1. Create a model file without extension (ex: 1-ModelFile)
     2. Create model (ex: LinuxAssistant) based on the above model file, 
@@ -18,5 +19,5 @@
 ```bash
         ollama run LinuxAssistant
 ```
-
+    Refernce : https://docs.ollama.com/modelfile
 ****
