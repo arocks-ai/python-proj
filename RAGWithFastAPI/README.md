@@ -7,6 +7,8 @@
     Reference - https://learn.nextwork.org/projects/ai-devops-api
 
 
+---
+
 ### 1.RAG with FastAPI
 
 #### RAG workflow:
@@ -21,7 +23,8 @@
  6 Return AI-generated answer based on your documents
 
 ```
-   
+
+---   
 #### Environment Setup
 1. Run Ollama LLM Locally 
 2. Setup python environment
@@ -61,6 +64,8 @@ uvicorn app:app --reload    # Start a FastAPI application using the Uvicorn ASGI
 ```
 
 
+---
+
 #### Test the Application
 
 ```bash
@@ -74,7 +79,3 @@ Test the /query endpoint with "What is Kubernetes?"
 
 ```
 
-
-
-
-****
