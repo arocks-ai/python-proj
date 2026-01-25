@@ -10,19 +10,18 @@
 ### 1.RAG with FastAPI
 
 #### RAG workflow:
+![RAG Workflow](./images/1-RAG-API-WorkFlow.png)
 
 ```bash
  1 Receive question 
  2 Search knowledge base with Chroma 
  3 Get relevant context 
  4 Combine context + question 
- 5 Send to Ollama's tinyllama
+ 5 Send to Ollamas tinyllama
  6 Return AI-generated answer based on your documents
 
 ```
    
-
-
 #### Environment Setup
 1. Run Ollama LLM Locally 
 2. Setup python environment
