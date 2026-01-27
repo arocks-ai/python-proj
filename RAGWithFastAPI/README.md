@@ -93,9 +93,9 @@ curl -X POST "http://127.0.0.1:8000/query" -G --data-urlencode "q=What is Kubern
 Open your browser: http://127.0.0.1:8000/docs
 Test the /query endpoint with "What is Kubernetes?"
 ```
----
-[Back to top](#rag-api-with-fastapi)
 
+[Back to top](#rag-api-with-fastapi)
+---
 
 
 ### Part2: Containerize RAG API with Docker 
@@ -187,20 +187,22 @@ curl localhost:8000/health
 curl -X POST "http://127.0.0.1:8000/query" -G --data-urlencode "q=What is Kubernetes?"
 
 ```
----
 [Back to top](#rag-api-with-fastapi)
+
+---
 
 
 
 ### Part3: Deploy to Kubernetes
 TBD
 
----
-[Back to top](#rag-api-with-fastapi)
 
+[Back to top](#rag-api-with-fastapi)
+---
 
 ### Part4: GitHub Actions workflows 
 TBD
 
----
+
 [Back to top](#rag-api-with-fastapi)
+---
