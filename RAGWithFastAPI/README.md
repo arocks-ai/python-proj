@@ -1,11 +1,13 @@
 ## RAG API with FastAPI
-This project implements a **Retrieval-Augmented Generation (RAG) API** using **FastAPI**, **ChromaDB**, and **Ollama (a local LLM)**.
-    
-    Part1: Develop RAG API with FastAPI Application locally.  See the [Details](#part1-rag-with-fastapi) section.
-    Part2: Containerize RAG API with Docker 
-    Part3: Deploy into K8
-    Part4: Github Actions workflows
 
+This project implements a **Retrieval-Augmented Generation (RAG) API** using **FastAPI**, **ChromaDB**, and **Ollama (a local LLM)**.
+
+### Project Parts
+
+- **Part 1:** Develop RAG API with FastAPI locally [Details](#part1-rag-with-fastapi)
+- **Part 2:** Containerize the RAG API with Docker [Details](#part2-containerize-rag-api-with-docker)
+- **Part 3:** Deploy to Kubernetes  [Details](#part3-deploy-to-kubernetes)
+- **Part 4:** GitHub Actions workflows[Details](#part4-github-actions-workflows)
 
 The API answers user questions by:
 1. Retrieving relevant context from a **Chroma vector database**.
@@ -92,7 +94,7 @@ Open your browser: http://127.0.0.1:8000/docs
 Test the /query endpoint with "What is Kubernetes?"
 ```
 ---
-[Back to top](#readme)
+[Back to top](#rag-api-with-fastapi)
 
 
 
@@ -186,7 +188,19 @@ curl -X POST "http://127.0.0.1:8000/query" -G --data-urlencode "q=What is Kubern
 
 ```
 ---
-[Back to top](#readme)
+[Back to top](#rag-api-with-fastapi)
 
 
 
+### Part3: Deploy to Kubernetes
+TBD
+
+---
+[Back to top](#rag-api-with-fastapi)
+
+
+### Part4: GitHub Actions workflows 
+TBD
+
+---
+[Back to top](#rag-api-with-fastapi)
