@@ -1,15 +1,15 @@
 ## RAG API with FastAPI
-    1 Develop RAG API with FastAPI Application
-    2 Docker
-    3 Deploy into K8
-    4 Github Actions workflows
+    Part1: Develop RAG API with FastAPI Application
+    Part2: Containerize RAG API with Docker 
+    Part3: Deploy into K8
+    Part4: Github Actions workflows
 
     Reference - https://learn.nextwork.org/projects/ai-devops-api
 
 
 ---
 
-### 1.RAG with FastAPI
+### Part1: RAG with FastAPI
 
 #### RAG workflow:
 ![RAG Workflow](./images/1-RAG-API-WorkFlow.png)
@@ -80,8 +80,7 @@ Test the /query endpoint with "What is Kubernetes?"
 ```
 ---
 
-
-### 2.Containerize RAG API with Docker 
+### Part2: Containerize RAG API with Docker 
 
 #### Infra setup
 Ollama is running on host machine and application is running on docker containier 
@@ -92,6 +91,10 @@ How to make docker instance access the ollama server running on the host machine
 
 ![Docker setup](./images/2-rag_docker_diagram.png)
 
+
+---
+
+#### Access to Ollama service from docker instance
 ```bash
 # Update ollama service so that it can access from docker instance (or anywhere)
 sudo vi /etc/systemd/system/ollama.service 
@@ -104,6 +107,17 @@ ss -lt src :11434
 
 ```
 
+#### Allow firewall port
+```bash
+# Allow port 11434:
+sudo firewall-cmd --add-port=11434/tcp --permanent
+sudo firewall-cmd --reload
+
+# Verify:
+sudo firewall-cmd --list-ports
+```
+
+---
 
 
 
@@ -148,7 +162,7 @@ curl  $OLLAMA_HOST
 curl localhost:8000/health
 
 ```
-
+---
 
 #### Test the Application from host machine
 ```bash
