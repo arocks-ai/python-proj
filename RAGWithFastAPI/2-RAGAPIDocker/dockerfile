@@ -1,0 +1,29 @@
+
+# NOTE - Ollama is not part of this dockerfile. Ollama must be installed and running on the host machine.
+
+# Base Image - comes with Python + pip
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install OS dependencies
+RUN apt-get update && \
+    apt-get install -y curl && \
+    rm -rf /var/lib/apt/lists/*
+
+
+# Copy app files & install Python dependencies
+COPY app.py embed.py k8s.txt ./
+
+# Upgrade pip and install Python deps
+# --no-cache-dir to reduce image size
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir fastapi uvicorn chromadb ollama
+
+
+# pre-compute embeddings
+RUN python embed.py
+
+# Start API
+EXPOSE 8000
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]

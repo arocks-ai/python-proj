@@ -60,7 +60,8 @@ pip list | grep -E "fastapi|uvicorn|chromadb|ollama"
 
 # run uvicorn server
 uvicorn --version
-uvicorn app:app --reload    # Start a FastAPI application using the Uvicorn ASGI server
+uvicorn app:app --host 127.0.0.1 --port 8000    # Start a FastAPI application with specified port
+uvicorn app:app --reload                        # Auto detect changes
 ```
 
 
@@ -76,6 +77,83 @@ curl -X POST "http://127.0.0.1:8000/query" -G --data-urlencode "q=What is Kubern
 # From Swagger UI
 Open your browser: http://127.0.0.1:8000/docs
 Test the /query endpoint with "What is Kubernetes?"
+```
+---
+
+
+### 2.Containerize RAG API with Docker 
+
+#### Infra setup
+Ollama is running on host machine and application is running on docker containier 
+How to make docker instance access the ollama server running on the host machine ?
+- Update ollama.client() method by adding the host info: 
+- Update ollama service Configuration with Environment details (to allow access from outside)
+- Verify firewall port 11434 is opened (using firewall-cmd and ss command for this)
+
+![Docker setup](./images/2-rag_docker_diagram.png)
+
+```bash
+# Update ollama service so that it can access from docker instance (or anywhere)
+sudo vi /etc/systemd/system/ollama.service 
+  # Update Service details with Environment="OLLAMA_HOST=0.0.0.0:11434"
+sudo systemctl daemon-reload
+sudo systemctl restart ollama
+
+# Verify port info.. it should show 0.0.0.0:11434 or *:11434 instead of 127.0.0.1:11434
+ss -lt src :11434
 
 ```
 
+
+
+
+#### Build the docker Image
+```bash
+# Create and update dockerfile with required files
+cd ~/python-proj/RAGWithFastAPI/2-RAGAPIDocker
+
+touch dockerfile
+
+# docker works on local context only, copy files into directory where dockerfile exits
+cp ../1-RAGwithFastAPI/app.py ../1-RAGwithFastAPI/embed.py ../1-RAGwithFastAPI/k8s.txt ./  
+
+# build docker Image
+docker build -t rag-app .
+
+# Verify the image
+docker images | grep rag-app
+```
+
+#### Run the docker Instance using docker cmd or docker compose
+```bash
+# Method 1 - using docker command line
+# Start the rag-app container at port 8000
+docker run \
+  --add-host=host.docker.internal:host-gateway \
+  -e OLLAMA_HOST=http://host.docker.internal:11434 \
+  -p 8000:8000 \
+  rag-app
+
+
+# Method 2 - using docker compose
+# Create docker-compose.yml file with Image details (name, port, host environment details)
+touch docker-compose.yml 
+docker compose up
+docker compose up -d
+# docker compose down
+
+# login to running instance and verify ollama access/run and fastapi running status
+docker exec -it {docker-instance} /bin/bash
+curl  $OLLAMA_HOST
+curl localhost:8000/health
+
+```
+
+
+#### Test the Application from host machine
+```bash
+curl -X POST "http://127.0.0.1:8000/query" -G --data-urlencode "q=What is Kubernetes?"
+
+```
+
+---
