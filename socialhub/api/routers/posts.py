@@ -33,25 +33,41 @@ async def create_post(post_in: UserPostIn):
 
 
 
-# retrieve all posts
-@router.get("/posts", response_model=list[UserPost], tags=["Posts"], summary="Retrieve all posts")
+# retrieve all posts without comments
+@router.get("/posts", response_model=list[UserPost], tags=["Posts"], summary="Retrieve all posts w/o comments")
 async def get_posts():
     return posts_db
 
 
-# retrieve a single post by ID
-@router.get("/posts/{post_id}", response_model=UserPost, tags=["Posts"], summary="Get Post by Id")
+# # retrieve a single post by ID
+# @router.get("/posts/{post_id}", response_model=UserPost, tags=["Posts"], summary="Get Post by Id")
+# async def get_post(post_id: int):
+#     for post in posts_db:
+#         if post.id == post_id:
+#             return post        
+#     else:    
+#         raise HTTPException(status_code=404, detail="Post not found")
+
+# retrieve comment list for a given post ID
+@router.get("/posts/{post_id}/comments", response_model=list[Comment], \
+            tags=["Posts"], summary="Get Comment list by post-id")
 async def get_post(post_id: int):
     for post in posts_db:
         if post.id == post_id:
-            return post        
+            break
     else:    
         raise HTTPException(status_code=404, detail="Post not found")
+    
 
+    related_comments :list[Comment] = []
+    for comment in comments_db:
+        if comment.post_id == post_id:
+            related_comments.append(comment)
+    return related_comments
 
-# retrieve a single post and comments by ID
-@router.get("/posts/{post_id}/comments", response_model=UserPostWithComments, \
-            tags=["Posts"], summary="Get Post by Id")
+# retrieve a single post and comments by Post ID
+@router.get("/posts/{post_id}", response_model=UserPostWithComments, \
+            tags=["Posts"], summary="Get Post with comments by post-id")
 async def get_post_with_comments(post_id: int):
     # First find post by ID
     post_to_use :UserPost
@@ -62,7 +78,6 @@ async def get_post_with_comments(post_id: int):
     else:    
         raise HTTPException(status_code=404, detail="Post not found")
     
-
 
     # Now find comments related to this post
     related_comments :list[Comment] = []
@@ -101,7 +116,7 @@ async def create_post(comment_in: CommentIn):
 
 
 
-# retrieve a single post by ID
+# retrieve a single comment by ID
 @router.get("/comments/{comment_id}", response_model=Comment, 
             tags=["Comments"], summary="Get Comment by Id")
 async def get_post(comment_id: int):

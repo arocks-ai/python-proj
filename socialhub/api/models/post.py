@@ -35,17 +35,17 @@ class UserPostWithComments(BaseModel):
 HTTP Endpoints:
 
 General
-  GET /   Check API status
+  GET / — Check API status
 
 Posts
-  GET     /posts  Retrieve all posts
-  POST    /posts  Create a new post
-  GET     /posts/{post_id}    Get Post by Id
-  GET     /posts/{post_id}/comments    Get Post and also comments
+  GET /posts — Retrieve all posts (without comments)
+  POST /posts — Create a new post
+  GET /posts/{post_id} — Retrieve a post with comments by post ID
+  GET /posts/{post_id}/comments — Retrieve comments for a specific post
 
 Comments
-  POST    /comments                   Create a comment for a specific post
-  GET     /comments/{comment_id}      Get Comment by Id
+  POST /comments — Create a comment for a specific post
+  GET /comments/{comment_id} — Retrieve a comment by ID
 
 
 POST /posts/comments - Invalid Endpoint
@@ -53,27 +53,6 @@ GET  /posts/comments - Invalid Endpoint
 
 
 ---
-POST /posts/{post_id}/comments  
-
-Request:
-{
-    "message": "Simple Comment",
-    "post_id": 4,
-}
-
-
-Response:
-{
-    "message": "Sample message",
-    "id": 4,
-    "created_at": "2026-01-29T02:46:14.732036"
-    "comments": [
-        {
-            "message": "Sample comment",
-            "id": 2
-        }
-    ]
-}
 
 
 
