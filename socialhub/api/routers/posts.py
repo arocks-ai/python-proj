@@ -6,8 +6,8 @@ from socialhub.api.models.post import UserPost, UserPostIn, Comment, CommentIn, 
 router = APIRouter()
 
 # In-memory storage for posts
-posts_db: list[UserPost] = []       # UserPost Database
-comments_db: list[Comment]  = []    # Comments Database (no post info saved)
+posts_table: list[UserPost] = []       # UserPost Database
+comments_table: list[Comment]  = []    # Comments Database (no post info saved)
 posts_with_comments: dict[int, list[int]]  # Mapping of post_id to its list of comment_ids
 
 
@@ -26,9 +26,9 @@ post realted endpoints
 @router.post("/posts", response_model=UserPost, status_code=201, tags=["Posts"], summary="Create a new post")
 async def create_post(post_in: UserPostIn):
     input_data = post_in.dict()
-    post_id = len(posts_db)
+    post_id = len(posts_table)
     post = UserPost(id=post_id, created_at=datetime.utcnow(), **input_data)
-    posts_db.append(post)
+    posts_table.append(post)
     return post
 
 
@@ -36,13 +36,13 @@ async def create_post(post_in: UserPostIn):
 # retrieve all posts without comments
 @router.get("/posts", response_model=list[UserPost], tags=["Posts"], summary="Retrieve all posts w/o comments")
 async def get_posts():
-    return posts_db
+    return posts_table
 
 
 # # retrieve a single post by ID
 # @router.get("/posts/{post_id}", response_model=UserPost, tags=["Posts"], summary="Get Post by Id")
 # async def get_post(post_id: int):
-#     for post in posts_db:
+#     for post in posts_table:
 #         if post.id == post_id:
 #             return post        
 #     else:    
@@ -52,7 +52,7 @@ async def get_posts():
 @router.get("/posts/{post_id}/comments", response_model=list[Comment], \
             tags=["Posts"], summary="Get Comment list by post-id")
 async def get_post(post_id: int):
-    for post in posts_db:
+    for post in posts_table:
         if post.id == post_id:
             break
     else:    
@@ -60,7 +60,7 @@ async def get_post(post_id: int):
     
 
     related_comments :list[Comment] = []
-    for comment in comments_db:
+    for comment in comments_table:
         if comment.post_id == post_id:
             related_comments.append(comment)
     return related_comments
@@ -71,7 +71,7 @@ async def get_post(post_id: int):
 async def get_post_with_comments(post_id: int):
     # First find post by ID
     post_to_use :UserPost
-    for post in posts_db:
+    for post in posts_table:
         if post.id == post_id:
             post_to_use =  post
             break
@@ -81,7 +81,7 @@ async def get_post_with_comments(post_id: int):
 
     # Now find comments related to this post
     related_comments :list[Comment] = []
-    for comment in comments_db:
+    for comment in comments_table:
         if comment.post_id == post_id:
             related_comments.append(comment)
     post_with_comments = UserPostWithComments(post=post_to_use, comments=related_comments)
@@ -99,7 +99,7 @@ async def create_post(comment_in: CommentIn):
         
     # Check if post exists
     post_to_use :UserPost
-    for post in posts_db:
+    for post in posts_table:
         if post.id == comment_in.post_id:
             post_to_use = post
             break
@@ -108,9 +108,9 @@ async def create_post(comment_in: CommentIn):
 
     # Save comments to Database
     input_data = comment_in.dict()        
-    comment_id = len(comments_db)        
+    comment_id = len(comments_table)        
     new_comment = Comment(id=comment_id, **input_data)
-    comments_db.append(new_comment)
+    comments_table.append(new_comment)
 
     return new_comment
 
@@ -120,7 +120,7 @@ async def create_post(comment_in: CommentIn):
 @router.get("/comments/{comment_id}", response_model=Comment, 
             tags=["Comments"], summary="Get Comment by Id")
 async def get_post(comment_id: int):
-    for comment in comments_db:
+    for comment in comments_table:
         if comment.id == comment_id:
             return comment
         
