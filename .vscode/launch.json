@@ -1,0 +1,23 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug FastAPI",
+        "type": "debugpy",
+        // "cwd": "${workspaceFolder}/socialhub",
+        "request": "launch",
+        "module": "uvicorn",
+        "args": [
+          "socialhub.api.main:app",
+          "--reload"
+        ],
+        "jinja": true,
+        "console": "integratedTerminal",
+         "python.defaultInterpreterPath": "/home/ashok/Ashok/work/python-proj/.venv/bin/python"        
+        // "env": {
+        //     "VIRTUAL_ENV": "${workspaceFolder}/.venv",
+        //     "PATH": "${workspaceFolder}/.venv/bin:${env:PATH}"
+        //   }
+      }
+    ]
+  }

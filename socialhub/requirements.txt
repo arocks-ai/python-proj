@@ -1,2 +1,11 @@
 fastapi
 uvicorn[standard]
+pytest
+python-dotenv
+sqlalchemy
+databases
+databases[aiosqlite]
+pydantic_settings
+#databases[sqlite]
+
+
